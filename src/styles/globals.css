@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+@layer components {
+  * {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  }
+  .link {
+    @apply cursor-pointer hover:underline;
+  }
+
+  .button {
+    @apply py-2 px-4 sm:px-8 cursor-pointer font-medium text-xs md:text-base bg-zakvan_red-dark text-white rounded-full focus:outline-none active:transform active:scale-95 hover:bg-white hover:text-zakvan_red-dark hover:ring-2 border border-zakvan_red-dark hover:ring-zakvan_red-dark transition duration-300 ease-in-out;
+  }
+
+  .button-alt {
+    @apply py-2 px-4 sm:px-8 cursor-pointer bg-white font-semibold text-xs md:text-base text-zakvan_red-dark ring-2 ring-zakvan_red-dark rounded-full focus:outline-none active:transform active:scale-95 hover:text-white hover:bg-zakvan_red-dark transition duration-200 ease-in-out;
+  }
+}
