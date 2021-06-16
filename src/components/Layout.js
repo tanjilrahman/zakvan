@@ -6,8 +6,10 @@ import { addToCart, selectCartItems } from '../slices/cartSlice';
 import db from '../../firebase';
 import { addToList, selectItems } from '../slices/wishSlice';
 import { useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
 
 function Layout({ children }) {
+  const router = useRouter();
   const [session] = useSession();
   const localWish = useSelector(selectItems);
   const localCart = useSelector(selectCartItems);
@@ -21,7 +23,9 @@ function Layout({ children }) {
         dispatch(addToList(wish));
       });
     }
+  }, []);
 
+  useEffect(() => {
     const getCart = localStorage.getItem('cart');
     const parsedCart = JSON.parse(getCart);
     if (getCart !== null) {
@@ -29,7 +33,9 @@ function Layout({ children }) {
         dispatch(addToCart(cart));
       });
     }
+  }, []);
 
+  useEffect(() => {
     if (session) {
       const cartRef = db
         .collection('users')
@@ -79,25 +85,9 @@ function Layout({ children }) {
         }
       });
 
-      // if (cartLength === 0) {
-      //   db.collection('users')
-      //     .doc(session?.user.email)
-      //     .collection('cart')
-      //     .doc()
-      //     .set({
-      //       title: localCart.title,
-      //       description: localCart.description,
-      //       price: localCart.price,
-      //       prodId: localCart.prodId,
-      //       quantity: localCart.quantity,
-      //       selectedColor: localCart.selectedColor,
-      //       category: localCart.category,
-      //       images: localCart.images,
-      //     });
-      // }
+      localStorage.removeItem('cart');
+      localStorage.removeItem('wishlist');
     }
-    localStorage.removeItem('cart');
-    localStorage.removeItem('wishlist');
   }, [session]);
 
   useEffect(() => {
@@ -111,71 +101,19 @@ function Layout({ children }) {
       localStorage.setItem('cart', JSON.stringify(localCart));
     }
   }, [localCart]);
-  // const dispatch = useDispatch();
-  // const [products, setProducts] = useState([]);
-  // console.log(JSON.parse(products));
 
-  // dispatch(fetchProducts(JSON.parse(products)));
-
-  // useEffect(() => {
-  //   db.collection('products')
-  //     .orderBy('timestamp', 'desc')
-  //     .onSnapshot((snapshot) => {
-  //       snapshot.docs.map((doc) => {
-  //         setProducts((prev) => [
-  //           ...prev,
-  //           {
-  //             id: doc.id,
-  //             title: doc.data().title,
-  //             price: doc.data().price,
-  //             description: doc.data().description,
-  //             category: doc.data().category,
-  //             colorset: doc.data().colorset,
-  //             images: doc.data().images,
-  //             timestamp: moment(doc.data().timestamp.toDate()).unix(),
-  //           },
-  //         ]);
-  //       });
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   dispatch(fetchProducts(products));
-  // }, [products]);
-
-  // console.log(products);
   return (
     <>
       <Header />
       <div className='min-h-screen'>{children}</div>
-      <Footer />
+      {router.pathname !== '/cart' && <Footer />}
+      {router.pathname === '/cart' && (
+        <div className='hidden sm:block'>
+          <Footer />
+        </div>
+      )}
     </>
   );
 }
 
 export default Layout;
-
-// export async function getServerSideProps(context) {
-//   const data = await db
-//     .collection('products')
-//     .orderBy('timestamp', 'desc')
-//     .get();
-
-//   const products = data.docs.map((doc) => ({
-//     id: doc.id,
-//     title: doc.data().title,
-//     price: doc.data().price,
-//     description: doc.data().description,
-//     category: doc.data().category,
-//     colorset: doc.data().colorset,
-//     images: doc.data().images,
-//   }));
-
-//   console.log(products);
-
-//   return {
-//     props: {
-//       products: JSON.stringify(products),
-//     },
-//   };
-// }

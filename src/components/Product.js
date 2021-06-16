@@ -75,12 +75,13 @@ const Product = ({ id, title, price, category, images }) => {
       }
     }
   }, [react]);
+  // mx-2 my-1 sm:m-5
 
   return (
     <div
       onMouseOver={() => setHovering(true)}
       onMouseOut={() => setHovering(false)}
-      className='relative mx-2 my-1 sm:m-5'
+      className='relative'
     >
       {!loaded && (
         <span className='animate-ping absolute z-30 h-6 w-6 top-1/2 left-1/2 -mt-3 -ml-3 rounded-full bg-zakvan_red-dark opacity-75'></span>

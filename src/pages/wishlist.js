@@ -41,41 +41,64 @@ const Wishlist = () => {
       <Head>
         <title>Zakvan</title>
       </Head>
-      <main className='max-w-screen-2xl mx-auto text-gray-700 mt-4'>
-        <h1 className='text-3xl font-bold border-b pb-4'>Bookmarks</h1>
+      <main className='max-w-screen-2xl mx-auto text-gray-700 mt-2 sm:mt-7 mb-10 sm:mb-32'>
+        {wishlist?.length > 0 && (
+          <h1 className='text-xl sm:text-4xl font-semibold pb-2 mx-4 sm:mx-0 '>
+            Wishlist
+          </h1>
+        )}
+
         {wishlist?.length === 0 && (
-          <div className='lg:flex items-center'>
-            <div className='flex-grow'>
+          <div className='lg:flex justify-between items-center mt-4 sm:mt-12 sm:mb-20 mx-5 sm:mx-0'>
+            <div className='hidden sm:block space-y-7 w-1/3 text-left '>
+              <h4 className='text-4xl font-semibold mb-2'>It's empty here.</h4>
+              <p className='text-2xl leading-relaxed'>
+                Something's catching your eye? Add your favorite items to
+                Wishlist, and check them out anytime you wish.
+              </p>
+              <div>
+                <button
+                  className='button font-semibold text-2xl'
+                  onClick={() => router.push('/')}
+                >
+                  Go Shopping
+                </button>
+              </div>
+            </div>
+            <div className='sm:w-[55%]'>
               <Image
-                src='/No wish-02.svg'
-                height={500}
-                width={1000}
-                objectFit='cover'
+                src='/undraw_Wishlist_re_m7tv.svg'
+                alt='Wishlist'
+                height={1500}
+                width={2000}
+                objectFit='contain'
               />
             </div>
-
-            <div className='p-10 bg-gray-100 rounded-3xl flex flex-col h-64 w-1/3'>
-              <h4 className='text-xl font-bold mb-2'>It's empty here.</h4>
-              <p className='flex-grow'>
+            <div className='sm:hidden text-center space-y-4 mt-6'>
+              <h4 className='text-lg leading-none text-zakvan_red-dark'>
+                It's empty here.
+              </h4>
+              <p className='text-sm'>
                 Something's catching your eye? Add your favorite items to
-                Bookmarks, and check them out anytime you wish.
+                Wishlist, and check them out anytime you wish.
               </p>
-              <button className='button' onClick={() => router.push('/')}>
+              <button className='button-alt' onClick={() => router.push('/')}>
                 Go Shopping
               </button>
             </div>
           </div>
         )}
-        <div className='grid md:grid-cols-2 lg:grid-cols-4 mt-3'>
+        <div className='grid mx-2 sm:mx-0 grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
           {wishlist?.map(({ id, title, price, category, images }) => (
-            <Product
-              key={id}
-              id={id}
-              title={title}
-              price={price}
-              category={category}
-              images={images}
-            />
+            <div key={id} className='mx-2 my-1 sm:mr-5 sm:my-5'>
+              <Product
+                id={id}
+                title={title}
+                price={price}
+                category={category}
+                images={images}
+              />
+            </div>
           ))}
         </div>
       </main>

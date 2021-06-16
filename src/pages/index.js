@@ -72,7 +72,7 @@ export default function Home({ products }) {
                   </div>
                 </div>
                 {searchedItems?.map((item) => (
-                  <div>
+                  <div key={item.id}>
                     <Link href={`/products/${item.id}`}>
                       <a>
                         <div className='hover:bg-gray-100 py-4 px-4 transition duration-300 ease-in-out hover:rounded-lg cursor-pointer grid grid-cols-4'>

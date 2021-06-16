@@ -427,14 +427,15 @@ export default function ProductInfo({ productStr, relatedProductsStr }) {
           <div className='grid mx-2 sm:mx-0 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
             {filteredRelatedProducts.map(
               ({ id, title, price, category, images }) => (
-                <Product
-                  key={id}
-                  id={id}
-                  title={title}
-                  price={price}
-                  category={category}
-                  images={images}
-                />
+                <div key={id} className='mx-2 my-1 sm:m-5'>
+                  <Product
+                    id={id}
+                    title={title}
+                    price={price}
+                    category={category}
+                    images={images}
+                  />
+                </div>
               )
             )}
           </div>

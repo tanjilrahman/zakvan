@@ -5,13 +5,11 @@ import {
   UserCircleIcon,
   HeartIcon,
   MenuAlt2Icon,
-  MenuAlt3Icon,
-  MenuAlt4Icon,
+  XIcon,
 } from '@heroicons/react/outline';
 import {
   HeartIcon as HeartIconSolid,
   LightningBoltIcon,
-  MenuAlt1Icon,
 } from '@heroicons/react/solid';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import Link from 'next/link';
@@ -206,12 +204,17 @@ const Header = () => {
       </div>
       <div className='flex items-center justify-between'>
         <div className='flex items-center ml-4 md:ml-0'>
-          <MenuAlt2Icon
-            className='h-6 mr-3 sm:hidden text-zakvan_red-dark'
-            onClick={() =>
-              menuIsOpen ? setMenuIsOpen(false) : setMenuIsOpen(true)
-            }
-          />
+          {menuIsOpen ? (
+            <XIcon
+              className='h-6 mr-3 sm:hidden text-zakvan_red-dark'
+              onClick={() => setMenuIsOpen(false)}
+            />
+          ) : (
+            <MenuAlt2Icon
+              className='h-6 mr-3 sm:hidden text-zakvan_red-dark'
+              onClick={() => setMenuIsOpen(true)}
+            />
+          )}
           <div className='w-[4.5rem]  md:w-32'>
             <Link href='/'>
               <a>
@@ -242,7 +245,7 @@ const Header = () => {
                 </div>
               </div>
               {searchedItems?.map((item) => (
-                <div>
+                <div key={item.id}>
                   <Link href={`/products/${item.id}`}>
                     <a>
                       <div className='hover:bg-gray-100 py-4 px-6 transition duration-300 ease-in-out hover:rounded-lg cursor-pointer grid grid-cols-6'>
