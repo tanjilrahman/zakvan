@@ -153,7 +153,7 @@ const Checkout = () => {
           </div>
           <div className='sm:w-[55%]'>
             <Image
-              src='/undraw_Mobile_login_re_9ntv.svg'
+              src='/undraw_Login_re_4vu2.svg'
               alt='Please Login'
               height={1500}
               width={2000}
