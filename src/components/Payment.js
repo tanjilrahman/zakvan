@@ -77,9 +77,9 @@ const Payment = ({
   }, [paymentMethod]);
   return (
     <div>
-      <div className='space-y-4 mr-6'>
+      <div className='space-y-4 mr-0 sm:mr-6'>
         <div
-          className={`p-6 ring-2 ring-gray-300 rounded-3xl ${
+          className={`p-4 sm:p-6 ring-2 ring-gray-300 rounded-2xl sm:rounded-3xl ${
             shippingAddress.shipping === 'Inside Dhaka' &&
             'hover:ring-zakvan_red-dark cursor-pointer'
           } transition duration-200 ${
@@ -92,17 +92,21 @@ const Payment = ({
             setPaymentMethod('COD')
           }
         >
-          <h4 className='text-lg font-semibold'>Cash on Delivery (COD)</h4>
-          <p>Cash On Delivery is only active inside Dhaka.</p>
+          <h4 className='text-sm sm:text-lg font-semibold'>
+            Cash on Delivery (COD)
+          </h4>
+          <p className='text-xs sm:text-base'>
+            Cash On Delivery is only active inside Dhaka.
+          </p>
         </div>
         <div
-          className={`p-6 ring-2 ring-gray-300 rounded-3xl cursor-pointer hover:ring-zakvan_red-dark transition duration-200 ${
+          className={`p-4 sm:p-6 ring-2 ring-gray-300 rounded-2xl sm:rounded-3xl cursor-pointer hover:ring-zakvan_red-dark transition duration-200 ${
             paymentMethod === 'Digital' && 'ring-zakvan_red-dark'
           }`}
           onClick={() => setPaymentMethod('Digital')}
         >
-          <h4 className='text-lg font-semibold'>Digital payment</h4>
-          <p>
+          <h4 className='text-sm sm:text-lg font-semibold'>Digital payment</h4>
+          <p className='text-xs sm:text-base'>
             After clicking “Complete order”, you will be redirected to
             SSLCOMMERZ to complete your purchase securely.
           </p>
@@ -116,16 +120,16 @@ const Payment = ({
             id='note'
             rows='4'
             placeholder='Add a note to your order'
-            className='mt-1 py-3 px-4 ring-1 ring-gray-300 transition duration-300 focus:ring-zakvan_red-dark focus:border-zakvan_red-dark block w-full shadow-sm sm:text-sm border-gray-300 rounded-3xl'
+            className='mt-1 py-3 px-4 ring-1 ring-gray-300 transition duration-300 focus:ring-zakvan_red-dark focus:border-zakvan_red-dark block w-full shadow-sm text-sm border-gray-300 rounded-2xl sm:rounded-3xl'
           />
         </div>
       </div>
       <div className='mt-10 text-right sm:pr-6 flex items-center justify-between'>
         <div
-          className='link hover:text-zakvan_red-dark text-lg font-medium flex items-center'
+          className='link hover:text-zakvan_red-dark text-sm sm:text-lg font-medium flex items-center'
           onClick={() => setPayment(false)}
         >
-          <ArrowLeftIcon className='h-6 mr-1' /> Go back
+          <ArrowLeftIcon className='h-4 sm:h-6 mr-1' /> Go back
         </div>
         <button
           onClick={createCheckoutSession}
@@ -136,7 +140,9 @@ const Payment = ({
           Complete order
         </button>
       </div>
-      <p className='text-yellow-500 text-right sm:pr-6 mt-3'>{warn}</p>
+      <p className='text-yellow-500 text-right text-xs sm:text-base sm:pr-6 mt-3'>
+        {warn}
+      </p>
     </div>
   );
 };
