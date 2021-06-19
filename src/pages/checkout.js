@@ -20,7 +20,6 @@ const Checkout = () => {
 
   const [session] = useSession();
   const [showSummary, setShowSummary] = useState(false);
-  const [marginBottom, setMarginBottom] = useState({});
   const [style, setStyle] = useState({});
   const [payment, setPayment] = useState(false);
   const [phoneError, setPhoneError] = useState('');
@@ -154,13 +153,11 @@ const Checkout = () => {
   useEffect(() => {
     if (showSummary) {
       setStyle({
-        transform: `translateY(-${215 + 73.5 * cartlist.length}px)`,
+        transform: `translateY(-${220 + 73.5 * cartlist?.length}px)`,
+        marginBottom: `-${200 + 73.5 * cartlist?.length}px`,
       });
-      // setMarginBottom({
-      //   marginBottom: `-${200 + 73.5 * cartlist.length}px`,
-      // });
     } else {
-      setStyle({ transform: `translateY(0px)` });
+      setStyle({ transform: `translateY(0px)`, marginBottom: '32px' });
     }
   }, [showSummary]);
   if (!session)
@@ -214,7 +211,7 @@ const Checkout = () => {
       >
         <h1 className='flex items-center'>
           {!showSummary ? 'Hide' : 'Show'} Order Summary{' '}
-          {showSummary ? (
+          {!showSummary ? (
             <ArrowNarrowUpIcon className='h-4' />
           ) : (
             <ArrowNarrowDownIcon className='h-4' />
@@ -222,7 +219,6 @@ const Checkout = () => {
         </h1>
         <p>৳{total}</p>
       </div>
-      {/* style={marginBottom} */}
       <div className='mt-4 relative'>
         <div className='sm:hidden px-4'>
           <div className='border-b pb-2'>
@@ -280,7 +276,7 @@ const Checkout = () => {
         </div>
 
         <div
-          className='transition duration-500 bg-white w-full sm:w-auto mb-8 px-4 sm:px-0'
+          className='transition duration-500 bg-white w-full sm:w-auto px-4 sm:px-0'
           style={style}
         >
           <div>

@@ -37,7 +37,7 @@ const Cart = () => {
   }, [session, localCart]);
 
   return (
-    <main className='max-w-screen-2xl mx-auto mt-2 sm:mt-7 text-gray-700'>
+    <main className='max-w-screen-2xl mx-auto mt-2 sm:mt-7 text-gray-700 sm:mb-12'>
       {cartlist?.length > 0 && (
         <h1 className='text-xl sm:text-4xl font-semibold pb-2 mx-4 sm:mx-0 '>
           Shopping Cart
@@ -65,7 +65,7 @@ const Cart = () => {
             </div>
             <div className='sm:w-[55%]'>
               <Image
-                src='/undraw_empty_xct9.svg'
+                src='/undraw_empty_cart_co35.svg'
                 alt='Empty cart'
                 height={1500}
                 width={2000}

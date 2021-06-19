@@ -18,39 +18,12 @@ const Orders = ({ orders }) => {
   if (typeof window !== 'undefined' && loading)
     return (
       <div className='max-w-screen-2xl mx-auto text-gray-700'>
-        <div className='lg:flex justify-between items-center mt-4 sm:mt-12 sm:mb-20 mx-5 sm:mx-0'>
-          <div className='hidden sm:block space-y-7 w-1/3 text-left '>
-            <h4 className='text-4xl font-semibold mb-2'>Access Denied!</h4>
-            <p className='text-2xl leading-relaxed'>
-              You're not supposed to be here.
-            </p>
-            <div>
-              <button
-                className='button font-semibold text-2xl'
-                onClick={() => router.push('/')}
-              >
-                Back where you came from
-              </button>
-            </div>
-          </div>
-          <div className='sm:w-[55%]'>
-            <Image
-              src='/undraw_access_denied_re_awnf.svg'
-              alt='Access Denied'
-              height={1500}
-              width={2000}
-              objectFit='contain'
-            />
-          </div>
-          <div className='sm:hidden text-center space-y-4 mt-6'>
-            <h4 className='text-lg leading-none text-zakvan_red-dark'>
-              Access Denied!
-            </h4>
-            <p className='text-sm'>You're not supposed to be here.</p>
-            <button className='button-alt' onClick={() => router.push('/')}>
-              Back where you came from
-            </button>
-          </div>
+        <div className='mt-24 mx-5'>
+          <img
+            src='/undraw_page_not_found_su7k.svg'
+            alt='Access Denied'
+            className='mx-auto'
+          />
         </div>
       </div>
     );
@@ -58,7 +31,7 @@ const Orders = ({ orders }) => {
   if (!admins.includes(session?.user.email))
     return (
       <div className='max-w-screen-2xl mx-auto text-gray-700'>
-        <div className='lg:flex justify-between items-center mt-4 sm:mt-12 sm:mb-20 mx-5 sm:mx-0'>
+        {/* <div className='lg:flex justify-between items-center mt-4 sm:mt-12 sm:mb-20 mx-5 sm:mx-0'>
           <div className='hidden sm:block space-y-7 w-1/3 text-left '>
             <h4 className='text-4xl font-semibold mb-2'>Access Denied!</h4>
             <p className='text-2xl leading-relaxed'>
@@ -91,6 +64,13 @@ const Orders = ({ orders }) => {
               Back where you came from
             </button>
           </div>
+        </div> */}
+        <div className='mt-24 mx-5'>
+          <img
+            src='/undraw_page_not_found_su7k.svg'
+            alt='Access Denied'
+            className='mx-auto'
+          />
         </div>
       </div>
     );
@@ -99,11 +79,11 @@ const Orders = ({ orders }) => {
       <Head>
         <title>Zakvan | Admin-Orders</title>
       </Head>
-      <main className='max-w-screen-2xl mx-auto text-gray-700 mt-4 mb-40'>
-        <h1 className='text-3xl font-bold border-b pb-4'>
+      <main className='max-w-screen-2xl mx-auto text-gray-700 sm:mt-4 mb-40 p-4 sm:p-0'>
+        <h1 className='text-base sm:text-3xl font-semibold'>
           Admin | Orders | total: {parsedOrders.length}
         </h1>
-        <div className='mt-8 space-y-6'>
+        <div className='mt-5 space-y-6'>
           {parsedOrders.map((order) => (
             <AdminOrder
               key={order.tran_id}
