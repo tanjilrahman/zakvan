@@ -11,7 +11,7 @@ import Banner from '../components/Banner';
 import ProductFeed from '../components/ProductFeed';
 import { scrollToView, selectScroll } from '../slices/categorySlice';
 
-export default function Home({ products }) {
+export default function Home({ products, banners, categories }) {
   const [search, setSearch] = useState('');
   const [searchedItems, setSearchedItems] = useState([]);
   const productsRef = useRef(null);
@@ -19,6 +19,8 @@ export default function Home({ products }) {
   const dispatch = useDispatch();
 
   const persedProducts = JSON.parse(products);
+  const persedBanners = JSON.parse(banners);
+  const persedCategories = JSON.parse(categories);
 
   useEffect(() => {
     if (scroll === true) {
@@ -50,7 +52,7 @@ export default function Home({ products }) {
       </Head>
 
       <main className='max-w-screen-2xl mx-auto mb-20 sm:mb-40'>
-        <Banner />
+        <Banner banners={persedBanners} />
         <div
           className='bg-gray-100 text-xs flex leading-tight relative sm:hidden items-center rounded-full mx-4'
           ref={productsRef}
@@ -114,7 +116,7 @@ export default function Home({ products }) {
             </div>
           )}
         </div>
-        <ProductFeed products={JSON.parse(products)} />
+        <ProductFeed products={persedProducts} categories={persedCategories} />
       </main>
     </div>
   );
@@ -128,7 +130,27 @@ export async function getServerSideProps(context) {
     .orderBy('timestamp', 'desc')
     .get();
 
+  const bannersData = await db
+    .collection('banners')
+    .orderBy('timestamp', 'desc')
+    .get();
+
+  const categoryData = await db
+    .collection('categories')
+    .orderBy('timestamp', 'desc')
+    .get();
+
   const products = data.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  const banners = bannersData.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  const categories = categoryData.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
@@ -136,6 +158,8 @@ export async function getServerSideProps(context) {
   return {
     props: {
       products: JSON.stringify(products),
+      banners: JSON.stringify(banners),
+      categories: JSON.stringify(categories),
       session,
     },
   };

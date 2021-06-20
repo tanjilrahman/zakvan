@@ -197,7 +197,7 @@ export default function ProductInfo({ productStr, relatedProductsStr }) {
   return (
     <div>
       <Head>
-        <title>Zakvan</title>
+        <title>Zakvan | {title}</title>
       </Head>
       <main className='flex flex-col max-w-screen-2xl mx-auto text-gray-700 mb-20 sm:mb-40'>
         <div className='md:grid md:grid-cols-3'>

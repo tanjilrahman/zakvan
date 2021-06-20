@@ -39,7 +39,7 @@ const Wishlist = () => {
   return (
     <div>
       <Head>
-        <title>Zakvan</title>
+        <title>Zakvan | Wishlist</title>
       </Head>
       <main className='max-w-screen-2xl mx-auto text-gray-700 mt-2 sm:mt-7 mb-10 sm:mb-32'>
         {wishlist?.length > 0 && (

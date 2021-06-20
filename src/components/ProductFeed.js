@@ -4,7 +4,7 @@ import { LightningBoltIcon } from '@heroicons/react/solid';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCategory, selectCategory } from '../slices/categorySlice';
 
-const ProductFeed = ({ products }) => {
+const ProductFeed = ({ products, categories }) => {
   const selected = useSelector(selectCategory);
   const [sortedProducts, setSortedProducts] = useState([]);
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const ProductFeed = ({ products }) => {
 
   return (
     <div className='grid md:grid-cols-3 lg:grid-cols-4 mx-auto'>
-      <div className='sm:flex hidden md:flex-col overflow-scroll sm:overflow-hidden space-y-4 mr-8 sm:text-xl font-bold mt-5 italic text-gray-700'>
+      <div className='hidden sm:flex md:flex-col overflow-scroll sm:overflow-hidden space-y-4 mr-8 sm:text-xl font-bold mt-5 italic text-gray-700'>
         <div
           onClick={() => dispatch(changeCategory('New In'))}
           className={`bg-gray-100 rounded-3xl p-4 sm:p-10 cursor-pointer hover:bg-gray-300 transition duration-300 ease-in-out flex justify-between items-center ${
@@ -29,36 +29,20 @@ const ProductFeed = ({ products }) => {
           <h4>New In</h4>
           <LightningBoltIcon className='h-6 hidden sm:block' />
         </div>
-        <div
-          onClick={() => dispatch(changeCategory("Men's clothing"))}
-          className={`
+
+        {categories.map((category) => (
+          <div
+            key={category.id}
+            onClick={() => dispatch(changeCategory(category.category))}
+            className={`
           bg-gray-100 rounded-3xl p-4 sm:p-10 cursor-pointer hover:bg-gray-300 transition duration-300 ease-in-out ${
-            selected === "Men's clothing" &&
+            selected === category.category &&
             'bg-zakvan_red-dark text-white hover:bg-zakvan_red-dark'
           }`}
-        >
-          <h4>Men's clothing</h4>
-        </div>
-        <div
-          onClick={() => dispatch(changeCategory("Women's clothing"))}
-          className={`
-          bg-gray-100 rounded-3xl p-4 sm:p-10 cursor-pointer hover:bg-gray-300 transition duration-300 ease-in-out ${
-            selected === "Women's clothing" &&
-            'bg-zakvan_red-dark text-white hover:bg-zakvan_red-dark'
-          }`}
-        >
-          <h4>Women's clothing</h4>
-        </div>
-        <div
-          onClick={() => dispatch(changeCategory('Lifestyle'))}
-          className={`
-          bg-gray-100 rounded-3xl p-4 sm:p-10 cursor-pointer hover:bg-gray-300 transition duration-300 ease-in-out ${
-            selected === 'Lifestyle' &&
-            'bg-zakvan_red-dark text-white hover:bg-zakvan_red-dark'
-          }`}
-        >
-          <h4>Lifestyle</h4>
-        </div>
+          >
+            <h4>{category.category}</h4>
+          </div>
+        ))}
       </div>
 
       <div className='md:col-span-2 lg:col-span-3'>

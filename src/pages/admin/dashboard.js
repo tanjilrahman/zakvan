@@ -15,6 +15,11 @@ const Dashboard = () => {
   const [category, setCategory] = useState("Men's clothing");
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
+  const [banners, setBanners] = useState([]);
+  const [currentBanners, setCurrentBanners] = useState([]);
+  const [bannerDownloadURL, setBannerDownloadURL] = useState('');
+  const [newCategory, setNewCategory] = useState('');
+  const [currentCategories, setCurrentCategories] = useState([]);
   const [downloadUrl, setDownloadUrl] = useState([]);
   const [color, setColor] = useColor('hex', '#121212');
   const [colorset, setColorset] = useState([]);
@@ -50,6 +55,60 @@ const Dashboard = () => {
     setAvailableSizes([]);
   };
 
+  const bannerHandleSave = (e) => {
+    e.preventDefault();
+
+    bannerDownloadURL.map((banner) => {
+      db.collection('banners').doc().set({
+        banner,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    });
+
+    setProgress('');
+    setBannerDownloadURL([]);
+  };
+
+  const handleAddCategory = () => {
+    if (newCategory === '') return;
+    db.collection('categories').doc().set({
+      category: newCategory,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    setNewCategory('');
+  };
+
+  useEffect(async () => {
+    const data = await db
+      .collection('banners')
+      .orderBy('timestamp', 'desc')
+      .get();
+    const banners = data.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setCurrentBanners(banners);
+
+    const category = await db
+      .collection('categories')
+      .orderBy('timestamp', 'desc')
+      .get();
+    const categories = category.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    setCurrentCategories(categories);
+  }, []);
+
+  const handleDeleteBanner = (id) => {
+    db.collection('banners').doc(id).delete();
+  };
+
+  const handleRemoveCategory = (id) => {
+    db.collection('categories').doc(id).delete();
+  };
   useEffect(() => {
     const arrayOfImages = [...images];
 
@@ -80,13 +139,43 @@ const Dashboard = () => {
     });
   }, [images]);
 
+  useEffect(() => {
+    const arrayOfImages = [...banners];
+
+    arrayOfImages.map((banner) => {
+      const imageStorageRef = firebase
+        .storage()
+        .ref('banners')
+        .child(banner.name);
+
+      const uploadTask = imageStorageRef.put(banner);
+
+      return uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          var progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setProgress(Math.floor(progress));
+        },
+        (error) => {
+          alert('Something went wrong!', error);
+        },
+        () => {
+          uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            setBannerDownloadURL([...bannerDownloadURL, downloadURL]);
+          });
+        }
+      );
+    });
+  }, [banners]);
+
   if (typeof window !== 'undefined' && loading)
     return (
       <div className='max-w-screen-2xl mx-auto text-gray-700'>
         <div className='mt-24 mx-5'>
           <img
             src='/undraw_page_not_found_su7k.svg'
-            alt='Access Denied'
+            alt='404'
             className='mx-auto'
           />
         </div>
@@ -99,7 +188,7 @@ const Dashboard = () => {
         <div className='mt-24 mx-5'>
           <img
             src='/undraw_page_not_found_su7k.svg'
-            alt='Access Denied'
+            alt='404'
             className='mx-auto'
           />
         </div>
@@ -206,9 +295,11 @@ const Dashboard = () => {
                           autoComplete='category'
                           className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                         >
-                          <option>Men's clothing</option>
-                          <option>Women's clothing</option>
-                          <option>Lifestyle</option>
+                          {currentCategories.map((category) => (
+                            <option key={category.id}>
+                              {category.category}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     </div>
@@ -376,6 +467,134 @@ const Dashboard = () => {
                 </div>
               </form>
             </div>
+          </div>
+          <div>
+            <h4>Banners</h4>
+            <div>
+              <label className='block text-sm font-medium text-gray-700'>
+                Product image(s)
+              </label>
+              <div className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md'>
+                <div className='space-y-1 text-center'>
+                  <svg
+                    className='mx-auto h-12 w-12 text-gray-400'
+                    stroke='currentColor'
+                    fill='none'
+                    viewBox='0 0 48 48'
+                    aria-hidden='true'
+                  >
+                    <path
+                      d='M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02'
+                      strokeWidth={2}
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                    />
+                  </svg>
+                  <div className='flex text-sm text-gray-600'>
+                    <label
+                      htmlFor='banner-upload'
+                      className='relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500'
+                    >
+                      <span>Upload image(s)</span>
+                      <input
+                        required
+                        onChange={(e) => setBanners(e.target.files)}
+                        id='banner-upload'
+                        name='banners'
+                        type='file'
+                        className='sr-only'
+                      />
+                    </label>
+                    <p className='pl-1'>First one will be the cover.</p>
+                  </div>
+                  <p className='text-xs text-gray-500'>
+                    PNG, JPG, gif up to 10MB
+                  </p>
+                </div>
+              </div>
+              {currentBanners ? (
+                <div className='flex space-x-3'>
+                  {currentBanners.map((banner) => (
+                    <div
+                      key={banner.id}
+                      onClick={() => handleDeleteBanner(banner.id)}
+                      className='cursor-pointer'
+                    >
+                      <Image
+                        src={banner.banner}
+                        width={300}
+                        height={150}
+                        objectFit='cover'
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                ''
+              )}
+              {bannerDownloadURL ? (
+                <div className='flex space-x-3'>
+                  {bannerDownloadURL.map((image, i) => (
+                    <div key={i}>
+                      <Image
+                        src={image}
+                        width={300}
+                        height={150}
+                        objectFit='cover'
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                ''
+              )}
+              <div className='relative px-4 py-3 bg-gray-50 text-right sm:px-6'>
+                <span className='absolute left-6 top-5 italic text-gray-500'>
+                  {!progress ? '' : `Upload ${progress}% Done`}
+                </span>
+                <button
+                  onClick={bannerHandleSave}
+                  type='submit'
+                  className='inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zakvan_red-dark hover:bg-zakvan_red focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zakvan_red-dark disabled:bg-gray-500 disabled:text-white
+                      disabled:cursor-not-allowed'
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h4>Categories</h4>
+            {currentCategories.map((category) => (
+              <button
+                className='button-alt'
+                key={category.id}
+                onClick={() => handleRemoveCategory(category.id)}
+              >
+                {category.category}
+              </button>
+            ))}
+            <div>
+              <label
+                htmlFor='category'
+                className='block text-sm font-medium text-gray-700'
+              >
+                Add Category
+              </label>
+              <div className='mt-1 flex rounded-md shadow-sm'>
+                <input
+                  required
+                  value={newCategory}
+                  onChange={(e) => setNewCategory(e.target.value)}
+                  type='text'
+                  name='category'
+                  className='focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300'
+                />
+              </div>
+            </div>
+            <button className='button-alt' onClick={handleAddCategory}>
+              Add
+            </button>
           </div>
         </div>
       </main>

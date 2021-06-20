@@ -7,6 +7,7 @@ import { selectCartItems } from '../slices/cartSlice';
 import { useSelector } from 'react-redux';
 import CartProduct from '../components/CartProduct';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/outline';
+import Head from 'next/head';
 
 const Cart = () => {
   const router = useRouter();
@@ -38,6 +39,9 @@ const Cart = () => {
 
   return (
     <main className='max-w-screen-2xl mx-auto mt-2 sm:mt-7 text-gray-700 sm:mb-12'>
+      <Head>
+        <title>Zakvan | Cart</title>
+      </Head>
       {cartlist?.length > 0 && (
         <h1 className='text-xl sm:text-4xl font-semibold pb-2 mx-4 sm:mx-0 '>
           Shopping Cart
