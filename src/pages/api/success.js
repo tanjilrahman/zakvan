@@ -43,5 +43,5 @@ export default async (req, res) => {
       path: path.join(__dirname, '../../../../public/paymentSuccessMail.html'),
     }, // html body
   });
-  res.status(301).redirect(`${process.env.HOST}/success`);
+  res.status(200).redirect('/success');
 };
