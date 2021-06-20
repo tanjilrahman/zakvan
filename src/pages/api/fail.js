@@ -45,5 +45,5 @@ export default async (req, res) => {
       path: path.join(__dirname, '../../../../public/paymentFailureMail.html'),
     }, // html body
   });
-  res.status(200).redirect('failure');
+  res.status(301).redirect('/failure');
 };
