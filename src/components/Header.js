@@ -11,7 +11,7 @@ import {
   HeartIcon as HeartIconSolid,
   LightningBoltIcon,
 } from '@heroicons/react/solid';
-import { signIn, signOut, useSession } from 'next-auth/client';
+import { getSession, signIn, signOut, useSession } from 'next-auth/client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -30,6 +30,7 @@ const Header = () => {
   const [session] = useSession();
   const [search, setSearch] = useState('');
   const [searchedItems, setSearchedItems] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [cartlist, setCartlist] = useState([]);
   const [scroll, setScroll] = useState(false);
@@ -45,6 +46,19 @@ const Header = () => {
   const selected = useSelector(selectCategory);
 
   const dispatch = useDispatch();
+
+  useEffect(async () => {
+    let isSubscribed = true;
+    const category = await db.collection('categories').get();
+    const categories = category.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    if (isSubscribed) {
+      setCategories(categories);
+    }
+    return () => (isSubscribed = false);
+  }, []);
 
   useEffect(() => {
     if (session) {
@@ -170,36 +184,19 @@ const Header = () => {
             <h4>New In</h4>
             <LightningBoltIcon className='h-6' />
           </div>
-          <div
-            onClick={() => handleChangeCategory("Men's clothing")}
-            className={`
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              onClick={() => handleChangeCategory(category.category)}
+              className={`
           bg-gray-100 rounded-3xl p-6 cursor-pointer hover:bg-gray-300 transition duration-300 ease-in-out ${
-            selected === "Men's clothing" &&
+            selected === category.category &&
             'bg-zakvan_red-dark text-white hover:bg-zakvan_red-dark'
           }`}
-          >
-            <h4>Men's clothing</h4>
-          </div>
-          <div
-            onClick={() => handleChangeCategory("Women's clothing")}
-            className={`
-          bg-gray-100 rounded-3xl p-6 cursor-pointer hover:bg-gray-300 transition duration-300 ease-in-out ${
-            selected === "Women's clothing" &&
-            'bg-zakvan_red-dark text-white hover:bg-zakvan_red-dark'
-          }`}
-          >
-            <h4>Women's clothing</h4>
-          </div>
-          <div
-            onClick={() => handleChangeCategory('Lifestyle')}
-            className={`
-          bg-gray-100 rounded-3xl p-6 cursor-pointer hover:bg-gray-300 transition duration-300 ease-in-out ${
-            selected === 'Lifestyle' &&
-            'bg-zakvan_red-dark text-white hover:bg-zakvan_red-dark'
-          }`}
-          >
-            <h4>Lifestyle</h4>
-          </div>
+            >
+              <h4>{category.category}</h4>
+            </div>
+          ))}
         </div>
       </div>
       <div className='flex items-center justify-between'>
