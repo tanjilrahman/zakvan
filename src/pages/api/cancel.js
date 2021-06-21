@@ -19,5 +19,5 @@ export default async (req, res) => {
     .then(() => {
       console.log(`SUCCESS: Order ${tran_id} had been removed from the DB`);
     });
-  res.redirect(308, '/cart');
+  res.redirect(301, '/cart');
 };
