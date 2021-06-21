@@ -130,7 +130,7 @@ const Header = () => {
     setTimeout(() => {
       setItemAdded(false);
     }, 500);
-  }, [cartlist]);
+  }, [cartlist.length]);
 
   const listenScrollEvent = (e) => {
     if (window.scrollY > 24) {
