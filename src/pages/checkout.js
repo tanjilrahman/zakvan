@@ -13,7 +13,6 @@ import { selectCartItems } from '../slices/cartSlice';
 import { useRouter } from 'next/router';
 import Payment from '../components/Payment';
 import Image from 'next/image';
-import { ArrowDownIcon } from '@heroicons/react/outline';
 
 const Checkout = () => {
   const router = useRouter();
