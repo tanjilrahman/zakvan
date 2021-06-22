@@ -13,6 +13,7 @@ import { selectCartItems } from '../slices/cartSlice';
 import { useRouter } from 'next/router';
 import Payment from '../components/Payment';
 import Image from 'next/image';
+import Head from 'next/head';
 
 const Checkout = () => {
   const router = useRouter();
@@ -162,6 +163,9 @@ const Checkout = () => {
   if (!session)
     return (
       <div className='max-w-screen-2xl mx-auto text-gray-700'>
+        <Head>
+          <title>Zakvan | Checkout</title>
+        </Head>
         <div className='lg:flex justify-between items-center mt-4 sm:mt-12 sm:mb-20 px-5 sm:mx-0'>
           <div className='hidden sm:block space-y-7 w-1/3 text-left '>
             <h4 className='text-4xl font-semibold mb-2'>
