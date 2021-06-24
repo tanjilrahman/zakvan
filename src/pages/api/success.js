@@ -38,7 +38,7 @@ export default async (req, res) => {
   transporter.sendMail({
     from: `"Zakvan Dacca" <${process.env.EMAIL_SERVER_USER}>`, // sender address
     to: value_a,
-    subject: 'Zakvan order confirmation', // Subject line
+    subject: 'Order complete', // Subject line
     html: {
       path: path.join(__dirname, '../../../../public/paymentSuccessMail.html'),
     }, // html body

@@ -20,7 +20,7 @@ export default async (req, res) => {
   const info = await transporter.sendMail({
     from: `"Zakvan Dacca" <${process.env.EMAIL_SERVER_USER}>`, // sender address
     to: email, // list of receivers
-    subject: 'Zakvan order confirmation', // Subject line
+    subject: 'Order confirmation', // Subject line
     html: { path: path.join(__dirname, '../../../../public/orderMail.html') }, // html body
   });
 
