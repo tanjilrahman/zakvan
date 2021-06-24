@@ -12,14 +12,14 @@ const Dashboard = () => {
   const [session, loading] = useSession();
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
-  const [category, setCategory] = useState(currentCategories[0]);
+  const [currentCategories, setCurrentCategories] = useState([]);
+  const [category, setCategory] = useState('Select');
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
   const [banners, setBanners] = useState([]);
   const [currentBanners, setCurrentBanners] = useState([]);
   const [bannerDownloadURL, setBannerDownloadURL] = useState('');
   const [newCategory, setNewCategory] = useState('');
-  const [currentCategories, setCurrentCategories] = useState([]);
   const [downloadUrl, setDownloadUrl] = useState([]);
   const [color, setColor] = useColor('hex', '#121212');
   const [colorset, setColorset] = useState([]);
@@ -29,7 +29,6 @@ const Dashboard = () => {
     'tanjil.rahman10@gmail.com',
     'tanjil.rahman2020@gmail.com',
   ]);
-
   const [progress, setProgress] = useState('');
 
   const handleSave = (e) => {
@@ -295,6 +294,7 @@ const Dashboard = () => {
                           autoComplete='category'
                           className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                         >
+                          <option>Select</option>
                           {currentCategories.map((category) => (
                             <option key={category.id}>
                               {category.category}
@@ -454,7 +454,12 @@ const Dashboard = () => {
                     </span>
                     <button
                       disabled={
-                        !title || !description || !price || !images || !colorset
+                        !title ||
+                        !description ||
+                        !price ||
+                        !images ||
+                        !colorset ||
+                        category === 'Select'
                       }
                       onClick={handleSave}
                       type='submit'
