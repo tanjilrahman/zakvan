@@ -12,7 +12,7 @@ const Dashboard = () => {
   const [session, loading] = useSession();
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
-  const [category, setCategory] = useState("Men's clothing");
+  const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
   const [banners, setBanners] = useState([]);
