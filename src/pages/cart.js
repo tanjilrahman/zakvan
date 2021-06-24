@@ -35,7 +35,7 @@ const Cart = () => {
     } else {
       setCartlist(localCart);
     }
-  }, [session, localCart]);
+  }, [localCart]);
 
   return (
     <main className='max-w-screen-2xl mx-auto mt-2 sm:mt-7 text-gray-700 sm:mb-12'>

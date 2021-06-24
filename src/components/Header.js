@@ -77,7 +77,7 @@ const Header = () => {
     } else {
       setWishlist(localWish);
     }
-  }, [session, localWish]);
+  }, [localWish]);
 
   useEffect(() => {
     if (session) {
@@ -96,7 +96,7 @@ const Header = () => {
     } else {
       setCartlist(localCart);
     }
-  }, [session, localCart]);
+  }, [localCart]);
 
   const products = productsSnapshot?.docs.map((doc) => ({
     id: doc.id,

@@ -80,7 +80,7 @@ const Checkout = () => {
     } else {
       setCartlist(localCart);
     }
-  }, [session, localCart]);
+  }, [localCart]);
 
   const proceedToPayment = (e) => {
     e.preventDefault();

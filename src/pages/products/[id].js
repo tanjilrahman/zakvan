@@ -17,6 +17,16 @@ import { addToList, removeFromList, selectItems } from '../../slices/wishSlice';
 import { addToCart, selectCartItems } from '../../slices/cartSlice';
 
 export default function ProductInfo({ productStr, relatedProductsStr }) {
+  function shuffleArray(array) {
+    let i = array.length - 1;
+    for (; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    return array;
+  }
   const [session] = useSession();
   const router = useRouter();
 
@@ -89,6 +99,7 @@ export default function ProductInfo({ productStr, relatedProductsStr }) {
   const [selectedColor, setSelectedColor] = useState('');
   const [warning, setWarning] = useState('');
   const [cartlist, setCartlist] = useState([]);
+  const [filteredRelatedProducts, setFilteredRelatedProducts] = useState([]);
   const [selectedSize, setSelectedSize] = useState('');
   const localWish = useSelector(selectItems);
   const localCart = useSelector(selectCartItems);
@@ -183,6 +194,12 @@ export default function ProductInfo({ productStr, relatedProductsStr }) {
   }, [react, session]);
 
   useEffect(() => {
+    const array = relatedProducts.filter(
+      (product) => product.id !== router.query.id
+    );
+
+    setFilteredRelatedProducts(shuffleArray(array).splice(0, 4));
+
     setQuantity(1);
     setLoaded(false);
     setHighlighted(images[0]);
@@ -190,10 +207,6 @@ export default function ProductInfo({ productStr, relatedProductsStr }) {
     setSelectedSize('');
     setWarning('');
   }, [router.asPath]);
-
-  const filteredRelatedProducts = relatedProducts.filter(
-    (product) => product.id !== router.query.id
-  );
   return (
     <div>
       <Head>
