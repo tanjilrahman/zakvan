@@ -121,7 +121,7 @@ const Product = ({ id, title, price, category, images }) => {
       <Link href={`/products/${id}`}>
         <a>
           <div
-            className={`absolute transform opacity-0 top-[62%] sm:top-[55%] left-1/2 ml-[-36px] sm:ml-[-64.16px] button-alt ring-0 transition duration-300 ease-in-out rounded-full ${
+            className={`absolute transform opacity-0 top-[62%] sm:top-[55%] left-1/2 ml-[-36px] sm:ml-[-64.16px] text-gray-700 button-alt ring-0 transition duration-300 ease-in-out rounded-full ${
               hovering && 'opacity-100 -translate-y-10'
             }`}
           >

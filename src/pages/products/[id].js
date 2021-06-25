@@ -223,8 +223,8 @@ export default function ProductInfo({ productStr, relatedProductsStr }) {
                 <Image
                   onLoad={() => setLoaded(true)}
                   src={highlighted}
-                  height={1200}
-                  width={1000}
+                  height={2300}
+                  width={2000}
                   objectFit='cover'
                   className='rounded-2xl sm:rounded-3xl bg-gray-100'
                 />
@@ -259,15 +259,15 @@ export default function ProductInfo({ productStr, relatedProductsStr }) {
                     </div>
                   ))}
                 </div>
-                <div className='sm:col-span-5 relative'>
+                <div className='sm:col-span-5 relative sm:mr-4'>
                   {!loaded && (
                     <span className='animate-ping absolute z-20 h-12 w-12 top-1/2 left-1/2 -mt-6 -ml-6 rounded-full bg-zakvan_red-dark opacity-75'></span>
                   )}
                   <Image
                     onLoad={() => setLoaded(true)}
                     src={highlighted}
-                    height={950}
-                    width={830}
+                    height={2300}
+                    width={2000}
                     objectFit='cover'
                     className='rounded-2xl sm:rounded-3xl bg-gray-100'
                   />
